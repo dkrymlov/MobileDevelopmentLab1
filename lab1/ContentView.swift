@@ -8,14 +8,36 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @State var array : [Int] = []
+    @State private var itemToAdd = ""
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        NavigationStack{
+            VStack{
+                Form{
+                    Text(array.description)
+                    HStack{
+                        TextField("Number", text: $itemToAdd).keyboardType(.numberPad)
+                        Button("Add", action: {
+                            array.append(Int(itemToAdd) ?? 0)
+                            itemToAdd = ""
+                        })
+                    }
+                    if array.count >= 2 {
+                        NavigationLink(destination: ResultView(array: array)){
+                            Text("Sort")
+                        }
+                    }
+                }
+            }.navigationTitle("Sorting App").toolbar{
+                Button(action: {
+                    array = []
+                }, label: {
+                    Image(systemName: "arrow.clockwise")
+                })
+            }
         }
-        .padding()
     }
 }
 
